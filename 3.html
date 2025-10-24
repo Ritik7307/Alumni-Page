@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alumni Fund - Contribution Form</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    boxShadow: {
+                         'soft': '0 4px 12px rgba(0, 0, 0, 0.07)',
+                    }
+                },
+            },
+            plugins: [
+                require('@tailwindcss/forms'),
+            ],
+        };
+    </script>
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6;
+        }
+        .site-footer {
+            background-color: #001933;
+            color: #ccc;
+            text-align: center;
+            padding: 2rem 1rem;
+            font-size: 0.9rem;
+        }
+        .site-footer hr {
+            border: 0;
+            height: 1px;
+            background-color: #fff;
+            max-width: 1200px;
+            margin: 0 auto 1.5rem auto;
+        }
+        .site-footer p { margin: 0; }
+        .form-group-transition { transition: all 0.4s ease-in-out; }
+        .field-hidden {
+            opacity: 0;
+            transform: translateY(-10px);
+            height: 0;
+            overflow: hidden;
+            margin-top: 0; margin-bottom: 0;
+            padding-top: 0; padding-bottom: 0;
+            border: none;
+            visibility: hidden;
+        }
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        input[type="tel"]:focus,
+        input[type="number"]:focus,
+        select:focus,
+        textarea:focus {
+             border-color: #0ea5e9 !important;
+             box-shadow: 0 0 0 2px rgba(14, 165, 233, 0.3) !important;
+             outline: none !important;
+        }
+        input[type="radio"] { color: #0369a1; }
+        input[type="checkbox"] { color: #0369a1; border-radius: 4px; }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800">
+
+    <header class="bg-white shadow-sm top-0 z-50">
+        <div class="container mx-auto px-6 py-2 flex justify-between items-center bg-sky-800">
+            <div class="flex items-center space-x-4">
+            </div>
+            <div class="flex items-center gap-6">
+                <button id="mobile-menu-button" class="md:hidden text-white focus:outline-none">
+                    <i class="fas fa-bars text-2xl"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <nav class="bg-sky-800 sticky top-0 z-40">
+        <div class="container mx-auto px-6 hidden md:block">
+            <div id="desktop-nav" class="flex items-center justify-center">
+                <a href="#" class="nav-link text-white px-4 py-3 hover:bg-sky-700 transition duration-300 font-medium">Alumni Contribution Page</a>
+             
+            </div>
+        </div>
+        <div id="mobile-menu" class="hidden md:hidden bg-sky-800 px-2 pt-2 pb-3 space-y-1">
+            <a href="#" class="nav-link block text-white px-3 py-2 rounded-md hover:bg-sky-700">Alumni</a>
+            <span class="block text-white px-3 py-2 rounded-md bg-sky-900 font-semibold cursor-default">Contribution Form</span>
+        </div>
+    </nav>
+
+    <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
+
+        <h1 class="text-3xl md:text-4xl font-bold text-sky-800 text-center mb-8 md:mb-12">
+            Alumni Fund - Contribution Form
+        </h1>
+
+        <section class="max-w-4xl mx-auto bg-white p-6 md:p-10 rounded-xl shadow-soft mb-8 md:mb-12">
+            <h2 class="text-2xl md:text-3xl font-semibold text-sky-800 text-center mb-4">Dear Alumni,</h2>
+            <p class="text-base md:text-lg text-gray-700 text-center mb-6">Greetings from RGIPT.</p>
+            <div class="space-y-4 text-gray-700 text-left text-sm md:text-base leading-relaxed max-w-3xl mx-auto">
+                <p>
+                    At RGIPT, our alumni are more than just former students—they are mentors, trailblazers, and torchbearers of the Institute's vision, serving as our strongest ambassadors and enduring pillars of support. Your achievements across industries and academia inspire us, and your continued connection strengthens our community.
+                </p>
+                <p>
+                    As RGIPT grows as a hub of excellence in energy education and research, your unwavering support is instrumental. Your contribution—whether time, expertise, mentorship, or financial support—plays a pivotal role in enhancing academic excellence, supporting students, fostering innovation, upgrading infrastructure, and building a vibrant campus ecosystem.
+                </p>
+                <p>
+                    Every act of giving contributes meaningfully to RGIPT’s journey. Thank you for being a part of our future.
+                </p>
+            </div>
+        </section>
+
+        <section class="max-w-4xl mx-auto bg-white p-6 md:p-10 rounded-xl shadow-soft">
+            <form id="contribution-form" novalidate class="space-y-8">
+
+                <div class="bg-gray-50 p-6 rounded-lg border border-gray-200">
+                    <h3 class="text-xl font-semibold text-sky-800 mb-5 border-b pb-3">Donation & Payment</h3>
+
+                    <div class="mb-6">
+                        <label class="block text-base font-medium text-gray-800 mb-2">Donation Type</label>
+                        <div class="flex flex-col sm:flex-row gap-x-6 gap-y-3">
+                            <label class="flex items-center gap-2 text-base text-gray-700 cursor-pointer">
+                                <input type="radio" name="donationType" value="recognition"
+                                    class="form-radio h-5 w-5 text-sky-700 border-gray-400 focus:ring-sky-500" checked>
+                                Donate with Recognition
+                            </label>
+                            <label class="flex items-center gap-2 text-base text-gray-700 cursor-pointer">
+                                <input type="radio" name="donationType" value="anonymous"
+                                    class="form-radio h-5 w-5 text-sky-700 border-gray-400 focus:ring-sky-500">
+                                Donate Anonymously
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="text-center md:text-left mb-4">
+                        <p class="text-gray-700 leading-relaxed max-w-md mx-auto md:mx-0">
+                            Please complete your donation via bank transfer or QR code: <br>
+                            <strong class="text-gray-900">A/C number:</strong> 59480100001915 <br>
+                            <strong class="text-gray-900">A/C Name:</strong> Rajiv Gandhi Inst of Petroleum Technology Jais <br>
+                            <strong class="text-gray-900">Bank:</strong> Bank of Baroda <br>
+                            <strong class="text-gray-900">IFSC:</strong> BARB0RGIPTJ
+                        </p>
+                        <div class="w-full max-w-[20rem] aspect-square mx-auto md:mx-0 mt-4 border-2 border-gray-300 rounded-lg overflow-hidden flex items-center justify-center bg-gray-100 p-1">
+                             <img src="./images/1.jpg" alt="Bank of Baroda UPI QR Code" class="max-w-full h-auto object-contain">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-5 mt-6">
+                        <div class="form-group-transition">
+                            <label for="transaction-id" class="block text-sm font-medium text-gray-700 mb-1">
+                                Transaction ID / UTR No. <sup class="text-red-500">*</sup>
+                            </label>
+                            <input type="text" id="transaction-id" placeholder="Enter transaction ID" required
+                                class="block w-full max-w-md rounded-lg border-gray-300 shadow-sm focus:border-sky-500 focus:ring focus:ring-sky-500 focus:ring-opacity-50 text-sm">
+                        </div>
+                        <div class="form-group-transition">
+                            <label for="amount" class="block text-sm font-medium text-gray-700 mb-1">
+                                Amount Donated (INR) <sup class="text-red-500">*</sup>
+                            </label>
+                            <input type="number" id="amount" placeholder="Enter amount" required min="1"
+                                class="block w-full max-w-md rounded-lg border-gray-300 shadow-sm focus:border-sky-500 focus:ring focus:ring-sky-500 focus:ring-opacity-50 text-sm">
+                        </div>
+                        <div class="form-group-transition md:col-span-2">
+                             <label for="designated-fund" class="block text-sm font-medium text-gray-700 mb-1">
+                                 Designated Fund (Optional)
+                             </label>
+                             <select id="designated-fund"
+                                 class="block w-full max-w-md rounded-lg border-gray-300 shadow-sm focus:border-sky-500 focus:ring focus:ring-sky-500 focus:ring-opacity-50 text-sm">
+                                 <option value="">Select a fund (Optional)</option>
+                                 <option value="general">General Alumni Fund</option>
+                                 <option value="scholarship">Student Scholarship Fund</option>
+                                 <option value="infrastructure">Infrastructure Development</option>
+                                 <option value="research">Research Initiatives</option>
+                             </select>
+                         </div>
+                    </div>
+                </div>
+
+                <div class="bg-gray-50 p-6 rounded-lg border border-gray-200">
+                    <h3 class="text-xl font-semibold text-sky-800 mb-5 border-b pb-3">Donor Information</h3>
+                     <p id="anonymous-note" class="text-sm text-blue-600 mb-4 hidden">You are donating anonymously. Name and Batch are not required.</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-5">
+                        <div id="name-field-group" class="form-group-transition">
+                            <label for="full-name" class="block text-sm font-medium text-gray-700 mb-1">
+                                Full Name <sup class="text-red-500">*</sup>
+                            </label>
+                            <input type="text" id="full-name" placeholder="Enter full name" required
+                                class="block w-full max-w-md rounded-lg border-gray-300 shadow-sm focus:border-sky-500 focus:ring focus:ring-sky-500 focus:ring-opacity-50 text-sm">
+                        </div>
+                        <div class="form-group-transition">
+                            <label for="phone" class="block text-sm font-medium text-gray-700 mb-1">
+                                Phone Number <sup class="text-red-500">*</sup>
+                            </label>
+                            <input type="tel" id="phone" placeholder="Enter 10-digit mobile" required pattern="[0-9]{10}"
+                                class="block w-full max-w-md rounded-lg border-gray-300 shadow-sm focus:border-sky-500 focus:ring focus:ring-sky-500 focus:ring-opacity-50 text-sm">
+                        </div>
+                        <div class="form-group-transition">
+                            <label for="email" class="block text-sm font-medium text-gray-700 mb-1">
+                                Email ID (personal) <sup class="text-red-500">*</sup>
+                            </label>
+                            <input type="email" id="email" placeholder="Enter personal email" required
+                                class="block w-full max-w-md rounded-lg border-gray-300 shadow-sm focus:border-sky-500 focus:ring focus:ring-sky-500 focus:ring-opacity-50 text-sm">
+                        </div>
+                        <div class="form-group-transition">
+                            <label for="pan" class="block text-sm font-medium text-gray-700 mb-1">
+                                PAN Number (Optional)
+                            </label>
+                            <input type="text" id="pan" placeholder="Enter PAN for tax receipt"
+                                class="block w-full max-w-md rounded-lg border-gray-300 shadow-sm focus:border-sky-500 focus:ring focus:ring-sky-500 focus:ring-opacity-50 text-sm">
+                                <p class="text-xs text-gray-500 mt-1">Required for tax exemption certificate, if applicable.</p>
+                        </div>
+                        <div id="batch-field-group" class="form-group-transition">
+                            <label for="batch" class="block text-sm font-medium text-gray-700 mb-1">
+                                Graduating Batch <sup class="text-red-500">*</sup>
+                            </label>
+                            <input type="text" id="batch" placeholder="e.g., 2014" required
+                                class="block w-full max-w-md rounded-lg border-gray-300 shadow-sm focus:border-sky-500 focus:ring focus:ring-sky-500 focus:ring-opacity-50 text-sm">
+                        </div>
+                        <div class="form-group-transition">
+                            <label for="branch" class="block text-sm font-medium text-gray-700 mb-1">
+                                Branch <sup class="text-red-500">*</sup>
+                            </label>
+                            <input type="text" id="branch" placeholder="e.g., B.Tech Petroleum" required
+                                class="block w-full max-w-md rounded-lg border-gray-300 shadow-sm focus:border-sky-500 focus:ring focus:ring-sky-500 focus:ring-opacity-50 text-sm">
+                        </div>
+                         <div class="md:col-span-2 form-group-transition">
+                            <label for="employer" class="block text-sm font-medium text-gray-700 mb-1">
+                                Employer / Company Name (Optional)
+                            </label>
+                            <input type="text" id="employer" placeholder="Enter company name"
+                                class="block w-full max-w-md rounded-lg border-gray-300 shadow-sm focus:border-sky-500 focus:ring focus:ring-sky-500 focus:ring-opacity-50 text-sm">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-gray-50 p-6 rounded-lg border border-gray-200">
+                     <h3 class="text-xl font-semibold text-sky-800 mb-5 border-b pb-3">Additional Information</h3>
+                    <div class="space-y-5">
+                        <div class="form-group-transition">
+                            <label for="suggestions" class="block text-sm font-medium text-gray-700 mb-1">
+                                Suggestions to Utilize Fund (Optional)
+                            </label>
+                            <textarea id="suggestions"
+                                placeholder="Share your thoughts..." rows="3"
+                                class="block w-full max-w-md rounded-lg border-gray-300 shadow-sm focus:border-sky-500 focus:ring focus:ring-sky-500 focus:ring-opacity-50 text-sm"></textarea>
+                        </div>
+                         <div class="form-group-transition">
+                             <label class="flex items-center gap-2 text-sm text-gray-700 cursor-pointer">
+                                 <input type="checkbox" id="mailing-list" name="mailing-list"
+                                     class="form-checkbox h-4 w-4 text-sky-700 border-gray-400 rounded focus:ring-sky-500">
+                                 Add me to the RGIPT Alumni Mailing List.
+                             </label>
+                         </div>
+                    </div>
+                </div>
+
+                <p class="text-sm text-gray-600 italic">
+                    <sup class="text-red-500">*</sup> Indicates required field
+                </p>
+
+                <div class="flex gap-4 flex-col sm:flex-row pt-4 border-t border-gray-200">
+                    <button type="submit"
+                        class="w-full sm:w-auto py-2.5 px-8 rounded-lg font-semibold text-base text-white bg-sky-700 hover:bg-sky-800 transition-all duration-300 shadow focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-offset-2 transform hover:scale-105">
+                        Submit Contribution Details
+                    </button>
+                    <button type="reset"
+                        class="w-full sm:w-auto py-2.5 px-6 rounded-lg font-semibold text-base text-gray-700 bg-gray-200 hover:bg-gray-300 transition-all duration-300 shadow focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2">
+                        Reset Form
+                    </button>
+                </div>
+            </form>
+        </section>
+
+    </main>
+
+    <footer class="site-footer">
+        <hr>
+        <p>Copyright © 2025, All Rights Reserved, Rajiv Gandhi Institute of Petroleum Technology, Jais, Amethi</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+
+            const donationTypeRadios = document.querySelectorAll('input[name="donationType"]');
+            const nameFieldGroup = document.getElementById('name-field-group');
+            const batchFieldGroup = document.getElementById('batch-field-group');
+            const nameInput = document.getElementById('full-name');
+            const batchInput = document.getElementById('batch');
+            const anonymousNote = document.getElementById('anonymous-note');
+
+            function toggleAnonymousFields() {
+                const selectedValue = document.querySelector('input[name="donationType"]:checked').value;
+                const isAnonymous = selectedValue === 'anonymous';
+                nameFieldGroup.classList.toggle('field-hidden', isAnonymous);
+                batchFieldGroup.classList.toggle('field-hidden', isAnonymous);
+                nameInput.required = !isAnonymous;
+                batchInput.required = !isAnonymous;
+                anonymousNote.classList.toggle('hidden', !isAnonymous);
+            }
+
+            donationTypeRadios.forEach(radio => {
+                radio.addEventListener('change', toggleAnonymousFields);
+            });
+            toggleAnonymousFields();
+
+            const form = document.getElementById('contribution-form');
+            form.addEventListener('submit', (event) => {
+                event.preventDefault();
+                if (form.checkValidity()) {
+                    alert('Thank you for your generous contribution to RGIPT! Your support truly makes a difference.');
+                    form.reset();
+                    setTimeout(toggleAnonymousFields, 0);
+                } else {
+                    form.reportValidity();
+                }
+            });
+
+            form.addEventListener('reset', () => {
+                setTimeout(toggleAnonymousFields, 0);
+            });
+
+        });
+    </script>
+</body>
+</html>
