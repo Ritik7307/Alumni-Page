@@ -7,6 +7,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <style>
         body {
             font-family: 'Inter', sans-serif;
@@ -193,7 +194,7 @@ As RGIPT continues to grow as a hub of excellence in energy education and resear
 We are proud to announce a series of prestigious student awards, made possible through the generous contributions of our alumni and well-wishers. These awards aim to recognize and celebrate outstanding achievements in academics, research, innovation, leadership, social service, sustainability, sports, music, and campus life. Starting from the academic year 2025–26, the following honors will be instituted annually. <br>
 
 Every act of giving, regardless of size, contributes meaningfully to RGIPT’s journey towards becoming a world-class institution in energy education and research. We invite you to explore the various ways you can give back and make a lasting impact on the lives of current and future generations of RGIPTians.</p>
-                        <a href="#" data-page="contribution" class="nav-link text-sky-700 font-bold hover:underline text-lg">Learn How You Can Contribute &rarr;</a>
+                        <a href="#" data-page="contribution" class="nav-link text-sky-700 font-bold hover:underline text-lg">Contribute &rarr;</a>
                     </div>
                     <!-- Right: Image -->
                     <div class="w-full md:w-1/2">
@@ -388,8 +389,8 @@ I invite you to explore our web page and make the most of the resources and oppo
 
                 <!-- Toggle Buttons -->
                 <div class="flex justify-center mb-8 border-b">
-                    <button id="association-btn" class="committee-tab-btn py-3 px-6 font-semibold border-b-4 border-sky-600 text-sky-600">Alumni Association</button>
-                    <button id="affair-btn" class="committee-tab-btn py-3 px-6 font-semibold text-gray-500">Alumni Affair Community</button>
+                    <button id="association-btn" class="committee-tab-btn py-3 px-6 font-semibold border-b-4 border-sky-600 text-sky-600">Alumni Affair Community</button>
+                    <button id="affair-btn" class="committee-tab-btn py-3 px-6 font-semibold text-gray-500">Alumni Association</button>
                 </div>
 
                 <!-- Alumni Association Content -->
@@ -479,7 +480,116 @@ I invite you to explore our web page and make the most of the resources and oppo
             </div>
         </div>
 
-        <!-- Placeholder content for other pages -->
+        <div id="directory" 
+     class="page-content" x-data="alumniDirectory()"> 
+
+    <div class="bg-white p-8 rounded-lg shadow-lg max-w-7xl mx-auto">
+        
+        <div class="flex flex-col sm:flex-row justify-between sm:items-center mb-8 gap-4">
+            <h2 class="text-3xl font-bold text-gray-800">Alumni Directory</h2>
+            <button @click="isModalOpen = true" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-lg shadow-md transition duration-300 ease-in-out">
+                Register Your Profile
+            </button>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            
+            <template x-for="person in alumni" :key="person.id">
+                <div class="bg-gray-50 rounded-lg shadow-md p-5 flex flex-col items-center text-center transition-all duration-300 transform hover:scale-105 hover:shadow-xl">
+                    <img :src="person.photo" 
+                         alt="Profile Photo" 
+                         class="w-28 h-28 rounded-full mb-4 object-cover border-4 border-white shadow-sm">
+                    
+                    <h3 class="text-xl font-semibold text-gray-900" x-text="person.name"></h3>
+                    
+                    <p class="text-gray-600">
+                        <span x-text="person.branch"></span> - 
+                        Class of <span x-text="person.passingYear"></span>
+                    </p>
+                    
+                    <p class="text-gray-500 text-sm mt-2" x-text="person.email"></p>
+
+                    <a :href="person.linkedin" 
+                       target="_blank" 
+                       rel="noopener noreferrer" 
+                       class="mt-4 inline-block bg-blue-100 text-blue-800 text-sm font-medium px-4 py-1.5 rounded-full hover:bg-blue-200 transition duration-300">
+                        View LinkedIn
+                    </a>
+                </div>
+            </template>
+            </div>
+
+    </div>
+
+    <div x-show="isModalOpen"
+         x-transition:enter="transition ease-out duration-300"
+         x-transition:enter-start="opacity-0"
+         x-transition:enter-end="opacity-100"
+         x-transition:leave="transition ease-in duration-200"
+         x-transition:leave-start="opacity-100"
+         x-transition:leave-end="opacity-0"
+         class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-75"
+         @keydown.escape.window="isModalOpen = false"
+         style="display: none;">
+
+        <div class="bg-white rounded-lg shadow-2xl p-8 w-full max-w-lg" @click.outside="isModalOpen = false">
+            
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-2xl font-bold text-gray-800">Register Profile</h3>
+                <button @click="isModalOpen = false" class="text-gray-400 hover:text-gray-600 text-3xl">&times;</button>
+            </div>
+
+            <form @submit.prevent="handleSubmit">
+                <div class="space-y-4">
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Profile Photo</label>
+                        <template x-if="photoPreviewUrl">
+                            <img :src="photoPreviewUrl" alt="Photo Preview" class="w-24 h-24 rounded-full mb-2 object-cover">
+                        </template>
+                        <input type="file" @change="handlePhotoChange" accept="image/*" class="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
+                    </div>
+
+                    <div>
+                        <label for="name" class="block text-sm font-medium text-gray-700">Full Name</label>
+                        <input type="text" id="name" x-model="newAlumnus.name" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                    </div>
+
+                    <div>
+                        <label for="email" class="block text-sm font-medium text-gray-700">Email Address</label>
+                        <input type="email" id="email" x-model="newAlumnus.email" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label for="passingYear" class="block text-sm font-medium text-gray-700">Passing Year</label>
+                            <input type="number" id="passingYear" x-model="newAlumnus.passingYear" required placeholder="e.g., 2020" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                        </div>
+                        <div>
+                            <label for="branch" class="block text-sm font-medium text-gray-700">Branch</label>
+                            <input type="text" id="branch" x-model="newAlumnus.branch" required placeholder="e.g., Computer Science" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label for="linkedin" class="block text-sm font-medium text-gray-700">LinkedIn Profile URL</label>
+                        <input type="url" id="linkedin" x-model="newAlumnus.linkedin" required placeholder="https://linkedin.com/in/..." class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                    </div>
+                </div>
+
+                <div class="mt-8 text-right">
+                    <button type="submit" class="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-lg shadow-md transition duration-300 ease-in-out">
+                        Submit Profile
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+        
+        
+
+            <!-- Placeholder content for other pages -->
         <div id="directory" class="page-content hidden"><div class="bg-white p-8 rounded-lg shadow-lg"><h2 class="text-3xl font-bold">Directory - Coming Soon</h2></div></div>
         
         <div id="testimonials" class="page-content hidden">
@@ -521,13 +631,13 @@ I invite you to explore our web page and make the most of the resources and oppo
                     <!-- Testimonial 3 -->
                     <div class="flex flex-col md:flex-row items-center gap-8">
                         <div class="w-full md:w-1/4 flex-shrink-0 text-center">
-                            <img src="https://i.pravatar.cc/200?u=vasundhara" class="w-40 h-40 rounded-full mx-auto shadow-xl border-4 border-white">
+                            <img src="./images/varundhara kumar.png" class="w-40 h-40 rounded-full mx-auto shadow-xl border-4 border-white">
                         </div>
                         <div class="w-full md:w-3/4 bg-gray-50 p-6 rounded-lg relative">
                            <i class="fas fa-quote-left text-sky-200 text-6xl absolute -top-4 -left-4"></i>
-                            <p class="text-gray-600 mb-4 z-10 relative">"When I look back upon my journey at RGIPT, I am reminded of the gravitational pull of the question: 'How will RGIPT shape my future?' 7 years down the line in Royal Dutch Shell, I can vehemently attest to the fact that RGIPT played a foundational role in empowering me to compete diligently, with apt analytical skills and integrity in the oil and gas industry."</p>
+                            <p class="text-gray-600 mb-4 z-10 relative">When I look back upon my journey at RGIPT, I am reminded of the gravitational pull of the question: 'How will RGIPT shape my future'? years down the line in Royal Dutch Shell, 6 having worked with both the Upstream and Downstream businesses, I can vehemently attest to the fact that RGIPT played a foundational role in empowering me to compete diligently, with apt analytical skills and integrity in the oil and gas industry.<br><br>Given the precarious nature of the oil and gas industry, this institute has a niche capability of providing students with an intense academic curriculum that hones the upcoming graduates to face the unbridled challenges in a holistic manner. Equally important is the focus given on involvement of students in multiple discipline related ‘student chapters’ that further helps them inculcate scholastic and leadership skills. In addition, this keeps the students apprised of the cut-throat competition and edging technology emerging around the world. Last but not the least, the overarching success of the program is much attributed to the finesse of the superlative faculty to whom the institute is indebted for their thorough support and guidance”.</p>
                             <div class="text-right">
-                                <p class="font-bold text-gray-800">Ms Vasundhara Kumar</p>
+                                <p class="font-bold text-gray-800">Ms Varundhara Kumar</p>
                                 <p class="text-sm text-gray-500">MLEG Integration Advisor, Shell Technology Centre, UK</p>
                             </div>
                         </div>
@@ -536,11 +646,11 @@ I invite you to explore our web page and make the most of the resources and oppo
                     <!-- Testimonial 4 -->
                     <div class="flex flex-col md:flex-row-reverse items-center gap-8">
                          <div class="w-full md:w-1/4 flex-shrink-0 text-center">
-                            <img src="https://i.pravatar.cc/200?u=shubham" class="w-40 h-40 rounded-full mx-auto shadow-xl border-4 border-white">
+                            <img src="./images/Shubham Gupta.jpg" class="w-40 h-40 rounded-full mx-auto shadow-xl border-4 border-white">
                         </div>
                         <div class="w-full md:w-3/4 bg-gray-50 p-6 rounded-lg relative">
                              <i class="fas fa-quote-left text-sky-200 text-6xl absolute -top-4 -left-4"></i>
-                            <p class="text-gray-600 mb-4 z-10 relative">"RGIPT was a turning point in my life. The 4 years of RGIPT were one of the best years of my life and probably the most important ones too. I attribute all my success to these four years spent here. It has taught me confidence, the importance of hard work and made me truly enter the corporate world. And the reason is the way RGIPT has nurtured me."</p>
+                            <p class="text-gray-600 mb-4 z-10 relative">"RGIPT was a turning point in my life. The 4 years of RGIPT were one of the best years of my life and probably the most important ones too. I attribute all my success to these four years spent here It has taught me confidence, the importance of hard work and made me truly enter the corporate world. And the reason is the way RGIPT has nurtured me. The teachers were proficient. They encouraged research work and imparted practical, in-depth knowledge, all of which still helps me in my projects at ONGC. <br><br>They are a call away even today. There is a very healthy and conducive environment in the college that will bring the best out of you. And the many cultural fests and academic clubs help polish oneself and shine. The college gave me a chance to coordinate the cultural activities which was a life changing experience. It transformed my personality and taught me a lot about teamwork and being a good team player and most importantly meeting deadlines, etc. All of these virtues that RGIPT imbibed in me have made me excel at professional life. Eventually, I got a campus placement at ONGC Ltd. And I thank the college for how it has shaped my life. I wish all the students, teachers, and staff all the best and hope they keep doing this great work that they did for me."</p>
                             <div class="text-right">
                                 <p class="font-bold text-gray-800">Mr Shubham Gupta</p>
                                 <p class="text-sm text-gray-500">Executive Engineer, ONGC</p>
@@ -551,14 +661,14 @@ I invite you to explore our web page and make the most of the resources and oppo
                     <!-- Testimonial 5 -->
                      <div class="flex flex-col md:flex-row items-center gap-8">
                         <div class="w-full md:w-1/4 flex-shrink-0 text-center">
-                            <img src="https://i.pravatar.cc/200?u=ankit" class="w-40 h-40 rounded-full mx-auto shadow-xl border-4 border-white">
+                            <img src="./images/Amey Kashyap.jpg" class="w-40 h-40 rounded-full mx-auto shadow-xl border-4 border-white">
                         </div>
                         <div class="w-full md:w-3/4 bg-gray-50 p-6 rounded-lg relative">
                            <i class="fas fa-quote-left text-sky-200 text-6xl absolute -top-4 -left-4"></i>
-                            <p class="text-gray-600 mb-4 z-10 relative">"Someone rightly said, 'Good teachers are the reason why ordinary students dream to do extraordinary things' and RGIPT gave me many such teachers! I feel really fortunate to have spent 4 years of my student life at RGIPT. It gave me a solid platform to learn, practice, and ultimately excel."</p>
+                            <p class="text-gray-600 mb-4 z-10 relative">"Someone rightly said, “Good teachers are the reason why ordinary students dream to do extraordinary things” and RGIPT gave me many such teachers! I feel really fortunate to have spent 4 years of my student life at RGIPT “. It gave me a solid platform to learn, practice, and implement the skills needed in industry, in real time. <br><br>The course curriculum at RGIPT focuses on bringing the best out of the student by inculcating a habit of self-discovery of important concepts through various design projects that students receive throughout the courses. Moreover, being there with some of the best minds of the country really helped me build myself not only as an academically strong student but as a better person holistically. Working with various student chapters helped to bring out the leader in me, a skill which can only be developed if right opportunities are given at the right time and kudos to RGIPT for doing exactly that."</p>
                             <div class="text-right">
-                                <p class="font-bold text-gray-800">Mr. Ankit Verma</p>
-                                <p class="text-sm text-gray-500">Reservoir Engineer, Schlumberger</p>
+                                <p class="font-bold text-gray-800">Mr Amey Kashyap</p>
+                                <p class="text-sm text-gray-500">Cocoa Trader, Export Trading Group, United Arab Emirates</p>
                             </div>
                         </div>
                     </div>
@@ -566,28 +676,28 @@ I invite you to explore our web page and make the most of the resources and oppo
                     <!-- Testimonial 6 -->
                      <div class="flex flex-col md:flex-row-reverse items-center gap-8">
                          <div class="w-full md:w-1/4 flex-shrink-0 text-center">
-                            <img src="https://i.pravatar.cc/200?u=priya" class="w-40 h-40 rounded-full mx-auto shadow-xl border-4 border-white">
+                            <img src="./images/Ashok Charan.png" class="w-40 h-40 rounded-full mx-auto shadow-xl border-4 border-white">
                         </div>
                         <div class="w-full md:w-3/4 bg-gray-50 p-6 rounded-lg relative">
                              <i class="fas fa-quote-left text-sky-200 text-6xl absolute -top-4 -left-4"></i>
                             <p class="text-gray-600 mb-4 z-10 relative">"I feel so fortunate to have been in the able hands of RGIPT which not only gave core competence but also instilled the most essential and significant personality traits like self belief and confidence, to which I attribute my sweet moments in career. Armoured with sound technical knowledge, I was ready for the industry."</p>
                             <div class="text-right">
-                                <p class="font-bold text-gray-800">Ms. Priya Mishra</p>
-                                <p class="text-sm text-gray-500">Drilling Engineer, Cairn India</p>
+                                <p class="font-bold text-gray-800">Mr Ashok Charan</p>
+                                <p class="text-sm text-gray-500">Commissioner of Income Tax, Mumbai</p>
                             </div>
                         </div>
                     </div>
                     <!-- Testimonial 7 -->
                      <div class="flex flex-col md:flex-row items-center gap-8">
                         <div class="w-full md:w-1/4 flex-shrink-0 text-center">
-                            <img src="https://i.pravatar.cc/200?u=ankit" class="w-40 h-40 rounded-full mx-auto shadow-xl border-4 border-white">
+                            <img src="./images/Sree rama teja.jpg" class="w-40 h-40 rounded-full mx-auto shadow-xl border-4 border-white">
                         </div>
                         <div class="w-full md:w-3/4 bg-gray-50 p-6 rounded-lg relative">
                            <i class="fas fa-quote-left text-sky-200 text-6xl absolute -top-4 -left-4"></i>
-                            <p class="text-gray-600 mb-4 z-10 relative">"Someone rightly said, 'Good teachers are the reason why ordinary students dream to do extraordinary things' and RGIPT gave me many such teachers! I feel really fortunate to have spent 4 years of my student life at RGIPT. It gave me a solid platform to learn, practice, and ultimately excel."</p>
+                            <p class="text-gray-600 mb-4 z-10 relative">"My journey of four years at RGIPT has helped me to knot the threads between theoretical fundamentals and the real time Petroleum industry environment. B.Tech Petroleum engineering at RGIPT helped me to acquire skillsets which induced enthusiasm and confidence in me to grab the opportunities and take the challenges of the corporate world. I am grateful to the faculty members to have provided such a wonderful environment of learning and enrichment."</p>
                             <div class="text-right">
-                                <p class="font-bold text-gray-800">Mr. Ankit Verma</p>
-                                <p class="text-sm text-gray-500">Reservoir Engineer, Schlumberger</p>
+                                <p class="font-bold text-gray-800">Mr Sree Rama Teja</p>
+                                <p class="text-sm text-gray-500">Assistant Manager, Essar Oil</p>
                             </div>
                         </div>
                     </div>
@@ -595,28 +705,28 @@ I invite you to explore our web page and make the most of the resources and oppo
                     <!-- Testimonial 8 -->
                      <div class="flex flex-col md:flex-row-reverse items-center gap-8">
                          <div class="w-full md:w-1/4 flex-shrink-0 text-center">
-                            <img src="https://i.pravatar.cc/200?u=priya" class="w-40 h-40 rounded-full mx-auto shadow-xl border-4 border-white">
+                            <img src="./images/Kartikey shukla.jpg" class="w-40 h-40 rounded-full mx-auto shadow-xl border-4 border-white">
                         </div>
                         <div class="w-full md:w-3/4 bg-gray-50 p-6 rounded-lg relative">
                              <i class="fas fa-quote-left text-sky-200 text-6xl absolute -top-4 -left-4"></i>
-                            <p class="text-gray-600 mb-4 z-10 relative">"I feel so fortunate to have been in the able hands of RGIPT which not only gave core competence but also instilled the most essential and significant personality traits like self belief and confidence, to which I attribute my sweet moments in career. Armoured with sound technical knowledge, I was ready for the industry."</p>
+                            <p class="text-gray-600 mb-4 z-10 relative">"College plays a very important role in making the career of a person, for me this was -RGIPT. Life in RGIPT was nothing less than a roller coaster ride, full of ups and downs one can imagine. But throughout the journey I have learned a lot. It has provided me with some great opportunities which helped me improve myself in every aspect as a student, as a senior, as a friend, as a sportsperson, as a leader and most importantly as a professional. <br><br>The College aims at the overall development of the student so that he/she can excel in different fields. In all I had a great learning experience and have learnt some very important lessons in life which will help me to grow in future as well."</p>
                             <div class="text-right">
-                                <p class="font-bold text-gray-800">Ms. Priya Mishra</p>
-                                <p class="text-sm text-gray-500">Drilling Engineer, Cairn India</p>
+                                <p class="font-bold text-gray-800">Mr Kartikey Yadav</p>
+                                <p class="text-sm text-gray-500">Senior officer, OIL India</p>
                             </div>
                         </div>
                     </div>
                     <!-- Testimonial 9 -->
                      <div class="flex flex-col md:flex-row items-center gap-8">
                         <div class="w-full md:w-1/4 flex-shrink-0 text-center">
-                            <img src="https://i.pravatar.cc/200?u=ankit" class="w-40 h-40 rounded-full mx-auto shadow-xl border-4 border-white">
+                            <img src="./images/Mrigya Fogat.jpg" class="w-40 h-40 rounded-full mx-auto shadow-xl border-4 border-white">
                         </div>
                         <div class="w-full md:w-3/4 bg-gray-50 p-6 rounded-lg relative">
                            <i class="fas fa-quote-left text-sky-200 text-6xl absolute -top-4 -left-4"></i>
-                            <p class="text-gray-600 mb-4 z-10 relative">"Someone rightly said, 'Good teachers are the reason why ordinary students dream to do extraordinary things' and RGIPT gave me many such teachers! I feel really fortunate to have spent 4 years of my student life at RGIPT. It gave me a solid platform to learn, practice, and ultimately excel."</p>
+                            <p class="text-gray-600 mb-4 z-10 relative">"I joined RGIPT in the Petroleum engineering program in 2017. By the end of my first year itself, I got the opportunity to be a part of the World Petroleum Council through the opportunity presented by RGIPT. Since then, up until my final year, RGIPT has given me several opportunities to have an international opportunity. Besides this, I also had the opportunity to work at the research labs and institute projects.<br><br>My education at RGIPT was holistic and involved academic lessons, organisational skills, leadership and social work. The support of my professorship and the Inspiring learning environment created by my college mates was conducive to my growth. The support of the administrative staff has always allowed me to give my best at any opportunity."</p>
                             <div class="text-right">
-                                <p class="font-bold text-gray-800">Mr. Ankit Verma</p>
-                                <p class="text-sm text-gray-500">Reservoir Engineer, Schlumberger</p>
+                                <p class="font-bold text-gray-800">Mr Mrigya Fogat</p>
+                                <p class="text-sm text-gray-500">Data scientist, HALLIBURTON</p>
                             </div>
                         </div>
                     </div>
@@ -624,28 +734,28 @@ I invite you to explore our web page and make the most of the resources and oppo
                     <!-- Testimonial 10 -->
                      <div class="flex flex-col md:flex-row-reverse items-center gap-8">
                          <div class="w-full md:w-1/4 flex-shrink-0 text-center">
-                            <img src="https://i.pravatar.cc/200?u=priya" class="w-40 h-40 rounded-full mx-auto shadow-xl border-4 border-white">
+                            <img src="./images/Rohan Jindal.jpg" class="w-40 h-40 rounded-full mx-auto shadow-xl border-4 border-white">
                         </div>
                         <div class="w-full md:w-3/4 bg-gray-50 p-6 rounded-lg relative">
                              <i class="fas fa-quote-left text-sky-200 text-6xl absolute -top-4 -left-4"></i>
-                            <p class="text-gray-600 mb-4 z-10 relative">"I feel so fortunate to have been in the able hands of RGIPT which not only gave core competence but also instilled the most essential and significant personality traits like self belief and confidence, to which I attribute my sweet moments in career. Armoured with sound technical knowledge, I was ready for the industry."</p>
+                            <p class="text-gray-600 mb-4 z-10 relative">"I always believe in savouring every moment, be it at RGIPT or further in my career. This approach towards life helped me seize a variety of opportunities at RGIPT, be it in academics, co-curricular activities or managerial roles. All these turned out to be vital in my all-around development which is very essential in the current era. Also, RGIPT helps you diversely explore yourself, develop self-confidence and open a world of new possibilities.<br><br>Though a challenging period, my experience at RGIPT challenged me to face new possibilities every day. The remote location atmosphere requires the students to constantly aim for the impossible and create new opportunities themselves. All this experience matures your conscience and gives you the courage to face the world that lies ahead."</p>
                             <div class="text-right">
-                                <p class="font-bold text-gray-800">Ms. Priya Mishra</p>
-                                <p class="text-sm text-gray-500">Drilling Engineer, Cairn India</p>
+                                <p class="font-bold text-gray-800">Mr Rohan Jindal</p>
+                                <p class="text-sm text-gray-500">Graduate Trainee Engineer, WIPRO</p>
                             </div>
                         </div>
                     </div>
                     <!-- Testimonial 11 -->
                      <div class="flex flex-col md:flex-row items-center gap-8">
                         <div class="w-full md:w-1/4 flex-shrink-0 text-center">
-                            <img src="https://i.pravatar.cc/200?u=ankit" class="w-40 h-40 rounded-full mx-auto shadow-xl border-4 border-white">
+                            <img src="./images/Sanjay Tiwari.jpg" class="w-40 h-40 rounded-full mx-auto shadow-xl border-4 border-white">
                         </div>
                         <div class="w-full md:w-3/4 bg-gray-50 p-6 rounded-lg relative">
                            <i class="fas fa-quote-left text-sky-200 text-6xl absolute -top-4 -left-4"></i>
-                            <p class="text-gray-600 mb-4 z-10 relative">"Someone rightly said, 'Good teachers are the reason why ordinary students dream to do extraordinary things' and RGIPT gave me many such teachers! I feel really fortunate to have spent 4 years of my student life at RGIPT. It gave me a solid platform to learn, practice, and ultimately excel."</p>
+                            <p class="text-gray-600 mb-4 z-10 relative">"As a former student of this prestigious college, it gives me immense pleasure to talk about the current ecosystem of RGIPT. The course design was always in sync with the industry requirement, through its various specialized courses and research works. But the thing that fascinated me more after my re-visit to RGIPT was the culture that it cultivated over the years, students are eager more than ever to learn about new technologies and explore and most importantly they are corporate ready.<br><br>All the various Student Chapters and Clubs have created a sense of competition which thrives on excellence. I was glad to know that these students are active member of Arpan, the Social Club of RGIPT, with all their scientific temper and corporate mines, they have garnered the most important virtue of human life which is to give back to the society in all possible ways and this blend makes them complete I was also fascinated by the amount of enthusiasm they had for sports as it is an integral part of human life and RGIPT is marching ahead with full flow. RGIPT over the years has improved and is improving even now, and I am very thrilled to meet these students as peers in my company and various others, in the coming future."</p>
                             <div class="text-right">
-                                <p class="font-bold text-gray-800">Mr. Ankit Verma</p>
-                                <p class="text-sm text-gray-500">Reservoir Engineer, Schlumberger</p>
+                                <p class="font-bold text-gray-800">Mr Sanjay Tiwari</p>
+                                <p class="text-sm text-gray-500">Senior Engineer, Adani Gas Limited</p>
                             </div>
                         </div>
                     </div>
@@ -653,28 +763,28 @@ I invite you to explore our web page and make the most of the resources and oppo
                     <!-- Testimonial 12 -->
                      <div class="flex flex-col md:flex-row-reverse items-center gap-8">
                          <div class="w-full md:w-1/4 flex-shrink-0 text-center">
-                            <img src="https://i.pravatar.cc/200?u=priya" class="w-40 h-40 rounded-full mx-auto shadow-xl border-4 border-white">
+                            <img src="./images/Apoorva_BTech-ChE.jpg" class="w-40 h-40 rounded-full mx-auto shadow-xl border-4 border-white">
                         </div>
                         <div class="w-full md:w-3/4 bg-gray-50 p-6 rounded-lg relative">
                              <i class="fas fa-quote-left text-sky-200 text-6xl absolute -top-4 -left-4"></i>
-                            <p class="text-gray-600 mb-4 z-10 relative">"I feel so fortunate to have been in the able hands of RGIPT which not only gave core competence but also instilled the most essential and significant personality traits like self belief and confidence, to which I attribute my sweet moments in career. Armoured with sound technical knowledge, I was ready for the industry."</p>
+                            <p class="text-gray-600 mb-4 z-10 relative">"I have pursued B.Tech in chemical engineering and graduated from the institute in 2013. Despite being the second batch since the institute's inception, I was fortunate enough to be exposed to some of the best professors and a really talented pool of batchmates making the entire learning experience exciting and equally challenging.<br><br>My course at RGIPT provided me with a good mix of national as well as international exposure in industry, academia & research fields. The curriculum was well rounded & real emphasis was kept on the first principle thinking, which came handy while transitioning to multiple career options such as Refinery operations, management consulting & product management.<br><br>Chemical engineering at RGIPT equips an individual in all capacities and provides a correct launchpad to be successful in corporate, research & administration fields. There are many success stories coming out of this department and I strongly believe there are many more to come. All the best to the incoming batch!"</p>
                             <div class="text-right">
-                                <p class="font-bold text-gray-800">Ms. Priya Mishra</p>
-                                <p class="text-sm text-gray-500">Drilling Engineer, Cairn India</p>
+                                <p class="font-bold text-gray-800">Apoorva (B.Tech in Chemical Engineering 2013)</p>
+                                <p class="text-sm text-gray-500">Product Manager - Myntra Designs Pvt. Ltd.</p>
                             </div>
                         </div>
                     </div>
                     <!-- Testimonial 13 -->
                      <div class="flex flex-col md:flex-row items-center gap-8">
                         <div class="w-full md:w-1/4 flex-shrink-0 text-center">
-                            <img src="https://i.pravatar.cc/200?u=ankit" class="w-40 h-40 rounded-full mx-auto shadow-xl border-4 border-white">
+                            <img src="./images/Shalu Agarwal.jpg" class="w-40 h-40 rounded-full mx-auto shadow-xl border-4 border-white">
                         </div>
                         <div class="w-full md:w-3/4 bg-gray-50 p-6 rounded-lg relative">
                            <i class="fas fa-quote-left text-sky-200 text-6xl absolute -top-4 -left-4"></i>
-                            <p class="text-gray-600 mb-4 z-10 relative">"Someone rightly said, 'Good teachers are the reason why ordinary students dream to do extraordinary things' and RGIPT gave me many such teachers! I feel really fortunate to have spent 4 years of my student life at RGIPT. It gave me a solid platform to learn, practice, and ultimately excel."</p>
+                            <p class="text-gray-600 mb-4 z-10 relative">"The Petroleum Engineering Course at RGIPT is a flashing course which provides in depth conceptual and technical understanding about the upstream industry. “ Working in AI company who provides solutions to process industries mainly the energy sector, the academic curriculum and courses offered here played the foundational role for me to approach to the dynamics of the industry with apt knowledge. <br><br>Apart from academics, there are various student chapters and clubs that have helped me hone my leadership and management skills. These chapters provide various global opportunities and exposure to the leading technologies. I am grateful to the faculty and my seniors for their support and guidance throughout my journey."</p>
                             <div class="text-right">
-                                <p class="font-bold text-gray-800">Mr. Ankit Verma</p>
-                                <p class="text-sm text-gray-500">Reservoir Engineer, Schlumberger</p>
+                                <p class="font-bold text-gray-800">Mr Shalu Aggarwal</p>
+                                <p class="text-sm text-gray-500">Product Analyst, Algo8</p>
                             </div>
                         </div>
                     </div>
@@ -682,28 +792,28 @@ I invite you to explore our web page and make the most of the resources and oppo
                     <!-- Testimonial 14 -->
                      <div class="flex flex-col md:flex-row-reverse items-center gap-8">
                          <div class="w-full md:w-1/4 flex-shrink-0 text-center">
-                            <img src="https://i.pravatar.cc/200?u=priya" class="w-40 h-40 rounded-full mx-auto shadow-xl border-4 border-white">
+                            <img src="./images/PRAJIT GOSWAMI.jpg" class="w-40 h-40 rounded-full mx-auto shadow-xl border-4 border-white">
                         </div>
                         <div class="w-full md:w-3/4 bg-gray-50 p-6 rounded-lg relative">
                              <i class="fas fa-quote-left text-sky-200 text-6xl absolute -top-4 -left-4"></i>
-                            <p class="text-gray-600 mb-4 z-10 relative">"I feel so fortunate to have been in the able hands of RGIPT which not only gave core competence but also instilled the most essential and significant personality traits like self belief and confidence, to which I attribute my sweet moments in career. Armoured with sound technical knowledge, I was ready for the industry."</p>
+                            <p class="text-gray-600 mb-4 z-10 relative">"DoMS RGIPT provided me with the foundation, on which I built my career. The course work combined with the case studies, were perfectly in tune with the job market, and helped me to a great extent in fetching not only on-campus offers but also off-campus positions. The support from the faculty was immense and it went far beyond just class room teaching. In totallity the program is a great boost to one’s professional as well as personal development."</p>
                             <div class="text-right">
-                                <p class="font-bold text-gray-800">Ms. Priya Mishra</p>
-                                <p class="text-sm text-gray-500">Drilling Engineer, Cairn India</p>
+                                <p class="font-bold text-gray-800">Prajit Goswami (2016–2018)</p>
+                                <p class="text-sm text-gray-500">Senior Analyst, KPMG</p>
                             </div>
                         </div>
                     </div>
                     <!-- Testimonial 15 -->
                      <div class="flex flex-col md:flex-row items-center gap-8">
                         <div class="w-full md:w-1/4 flex-shrink-0 text-center">
-                            <img src="https://i.pravatar.cc/200?u=ankit" class="w-40 h-40 rounded-full mx-auto shadow-xl border-4 border-white">
+                            <img src="./images/Harsha.jpg" class="w-40 h-40 rounded-full mx-auto shadow-xl border-4 border-white">
                         </div>
                         <div class="w-full md:w-3/4 bg-gray-50 p-6 rounded-lg relative">
                            <i class="fas fa-quote-left text-sky-200 text-6xl absolute -top-4 -left-4"></i>
-                            <p class="text-gray-600 mb-4 z-10 relative">"Someone rightly said, 'Good teachers are the reason why ordinary students dream to do extraordinary things' and RGIPT gave me many such teachers! I feel really fortunate to have spent 4 years of my student life at RGIPT. It gave me a solid platform to learn, practice, and ultimately excel."</p>
+                            <p class="text-gray-600 mb-4 z-10 relative">"Life at DoMS RGIPT is a journey full of multi-faceted growth. The 2-year MBA program is a highly curated course of diverse subjects, engaging study material and creative teaching methodologies, delivered by an extremely supportive and nurturing faculty. The course here aids an individual to develop the aptitude required, to not only amass knowledge, but to be able to apply it to real-life situations which one will be facing as a professional.<br><br>The program is immersive, presenting students with ample opportunities in the form of a myriad of platforms to showcase their talents and capabilities, as an individual and as well as a part of a team. Developing a growth mind-set is highly encouraged here.<br><br>My time at the institute has helped me gain subject knowledge, practical learnings and industry exposure that I shall always carry with me as I carve a niche for myself in the corporate world."</p>
                             <div class="text-right">
-                                <p class="font-bold text-gray-800">Mr. Ankit Verma</p>
-                                <p class="text-sm text-gray-500">Reservoir Engineer, Schlumberger</p>
+                                <p class="font-bold text-gray-800">Harsha Rajeev (2016–2018)</p>
+                                <p class="text-sm text-gray-500">Assistant Manager (Fleet Sales), BPCL, Jodhpur</p>
                             </div>
                         </div>
                     </div>
@@ -711,28 +821,28 @@ I invite you to explore our web page and make the most of the resources and oppo
                     <!-- Testimonial 16 -->
                      <div class="flex flex-col md:flex-row-reverse items-center gap-8">
                          <div class="w-full md:w-1/4 flex-shrink-0 text-center">
-                            <img src="https://i.pravatar.cc/200?u=priya" class="w-40 h-40 rounded-full mx-auto shadow-xl border-4 border-white">
+                            <img src="./images/Pranjul.jpg" class="w-40 h-40 rounded-full mx-auto shadow-xl border-4 border-white">
                         </div>
                         <div class="w-full md:w-3/4 bg-gray-50 p-6 rounded-lg relative">
                              <i class="fas fa-quote-left text-sky-200 text-6xl absolute -top-4 -left-4"></i>
-                            <p class="text-gray-600 mb-4 z-10 relative">"I feel so fortunate to have been in the able hands of RGIPT which not only gave core competence but also instilled the most essential and significant personality traits like self belief and confidence, to which I attribute my sweet moments in career. Armoured with sound technical knowledge, I was ready for the industry."</p>
+                            <p class="text-gray-600 mb-4 z-10 relative">"DoMS, RGIPT is a perfect place to shape your career. The lush green campus with serene atmosphere is a perfect place to give dimension to your career. On campus faculty and visiting faculty are best in class."</p>
                             <div class="text-right">
-                                <p class="font-bold text-gray-800">Ms. Priya Mishra</p>
-                                <p class="text-sm text-gray-500">Drilling Engineer, Cairn India</p>
+                                <p class="font-bold text-gray-800">Pranjul Gupta (2018-20)</p>
+                                <p class="text-sm text-gray-500">Tata Consultancy Services, Delhi</p>
                             </div>
                         </div>
                     </div>
                     <!-- Testimonial 17 -->
                      <div class="flex flex-col md:flex-row items-center gap-8">
                         <div class="w-full md:w-1/4 flex-shrink-0 text-center">
-                            <img src="https://i.pravatar.cc/200?u=ankit" class="w-40 h-40 rounded-full mx-auto shadow-xl border-4 border-white">
+                            <img src="./images/Harsh.jpg" class="w-40 h-40 rounded-full mx-auto shadow-xl border-4 border-white">
                         </div>
                         <div class="w-full md:w-3/4 bg-gray-50 p-6 rounded-lg relative">
                            <i class="fas fa-quote-left text-sky-200 text-6xl absolute -top-4 -left-4"></i>
-                            <p class="text-gray-600 mb-4 z-10 relative">"Someone rightly said, 'Good teachers are the reason why ordinary students dream to do extraordinary things' and RGIPT gave me many such teachers! I feel really fortunate to have spent 4 years of my student life at RGIPT. It gave me a solid platform to learn, practice, and ultimately excel."</p>
+                            <p class="text-gray-600 mb-4 z-10 relative">"RGIPT acts as a stepping stone for those looking to build their career in the field of Oil and Gas. The curriculum is so designed that it makes you industry ready. DoMs RGIPT has excellent infrastructure for holistic development of a student"</p>
                             <div class="text-right">
-                                <p class="font-bold text-gray-800">Mr. Ankit Verma</p>
-                                <p class="text-sm text-gray-500">Reservoir Engineer, Schlumberger</p>
+                                <p class="font-bold text-gray-800">Harsh Agarwal (2018-20)</p>
+                                <p class="text-sm text-gray-500">McKinsey and Company</p>
                             </div>
                         </div>
                     </div>
@@ -740,28 +850,28 @@ I invite you to explore our web page and make the most of the resources and oppo
                     <!-- Testimonial 18 -->
                      <div class="flex flex-col md:flex-row-reverse items-center gap-8">
                          <div class="w-full md:w-1/4 flex-shrink-0 text-center">
-                            <img src="https://i.pravatar.cc/200?u=priya" class="w-40 h-40 rounded-full mx-auto shadow-xl border-4 border-white">
+                            <img src="./images/Shafqat Mobarak.jpg" class="w-40 h-40 rounded-full mx-auto shadow-xl border-4 border-white">
                         </div>
                         <div class="w-full md:w-3/4 bg-gray-50 p-6 rounded-lg relative">
                              <i class="fas fa-quote-left text-sky-200 text-6xl absolute -top-4 -left-4"></i>
-                            <p class="text-gray-600 mb-4 z-10 relative">"I feel so fortunate to have been in the able hands of RGIPT which not only gave core competence but also instilled the most essential and significant personality traits like self belief and confidence, to which I attribute my sweet moments in career. Armoured with sound technical knowledge, I was ready for the industry."</p>
+                            <p class="text-gray-600 mb-4 z-10 relative">"RGIPT is not afraid to offer courses which are niche, even when a specific subject area is so new that no curriculum or text exists. For me, this program was not confined to those four walls of a floor. The curriculum, teachers and even fellow students always encouraged me to go beyond the classroom and add more to my learnings. My survival ride was in a paradoxical environment, where the program provided a safe cocoon, but professors prepared me for a challenging arena. In the end, it allowed me to grow in personal ways, I hadn’t even imagined."</p>
                             <div class="text-right">
-                                <p class="font-bold text-gray-800">Ms. Priya Mishra</p>
-                                <p class="text-sm text-gray-500">Drilling Engineer, Cairn India</p>
+                                <p class="font-bold text-gray-800">Shafqat Mobarak (2012–2014)</p>
+                                <p class="text-sm text-gray-500">National Skill Development Corporation</p>
                             </div>
                         </div>
                     </div>
                     <!-- Testimonial 19 -->
                      <div class="flex flex-col md:flex-row items-center gap-8">
                         <div class="w-full md:w-1/4 flex-shrink-0 text-center">
-                            <img src="https://i.pravatar.cc/200?u=ankit" class="w-40 h-40 rounded-full mx-auto shadow-xl border-4 border-white">
+                            <img src="./images/JITENDRA VARWADE.jpg" class="w-40 h-40 rounded-full mx-auto shadow-xl border-4 border-white">
                         </div>
                         <div class="w-full md:w-3/4 bg-gray-50 p-6 rounded-lg relative">
                            <i class="fas fa-quote-left text-sky-200 text-6xl absolute -top-4 -left-4"></i>
-                            <p class="text-gray-600 mb-4 z-10 relative">"Someone rightly said, 'Good teachers are the reason why ordinary students dream to do extraordinary things' and RGIPT gave me many such teachers! I feel really fortunate to have spent 4 years of my student life at RGIPT. It gave me a solid platform to learn, practice, and ultimately excel."</p>
+                            <p class="text-gray-600 mb-4 z-10 relative">"RGIPT provided me with the most exciting opportunity to learn and innovate many ways to explore management education. It played a key role in the development of my skills and business excellence. The motivation from the faculty helped me in choosing a right path in my management career.<br><br>The Placement Department’s training was very helpful in developing both intra personal and interpersonal skills. It was an amazing and memorable experience for this lifetime to be a student of DOMS RGIPT."</p>
                             <div class="text-right">
-                                <p class="font-bold text-gray-800">Mr. Ankit Verma</p>
-                                <p class="text-sm text-gray-500">Reservoir Engineer, Schlumberger</p>
+                                <p class="font-bold text-gray-800">Mr Jitendra Varwade (2016–2018)</p>
+                                <p class="text-sm text-gray-500">Senior Officer (Marketing), IOCL, Mumbai</p>
                             </div>
                         </div>
                     </div>
@@ -769,14 +879,14 @@ I invite you to explore our web page and make the most of the resources and oppo
                     <!-- Testimonial 20 -->
                      <div class="flex flex-col md:flex-row-reverse items-center gap-8">
                          <div class="w-full md:w-1/4 flex-shrink-0 text-center">
-                            <img src="https://i.pravatar.cc/200?u=priya" class="w-40 h-40 rounded-full mx-auto shadow-xl border-4 border-white">
+                            <img src="./images/ShaikAzeez.jpg" class="w-40 h-40 rounded-full mx-auto shadow-xl border-4 border-white">
                         </div>
                         <div class="w-full md:w-3/4 bg-gray-50 p-6 rounded-lg relative">
                              <i class="fas fa-quote-left text-sky-200 text-6xl absolute -top-4 -left-4"></i>
-                            <p class="text-gray-600 mb-4 z-10 relative">"I feel so fortunate to have been in the able hands of RGIPT which not only gave core competence but also instilled the most essential and significant personality traits like self belief and confidence, to which I attribute my sweet moments in career. Armoured with sound technical knowledge, I was ready for the industry."</p>
+                            <p class="text-gray-600 mb-4 z-10 relative">"As a former student of Rajiv Gandhi Institute of Petroleum Technology, I am delighted to write a testimonial on my college website. During my MBA in Petroleum and Energy from 2013 to 2015, I received the necessary knowledge and skills to excel in my field of study. The faculty members were supportive, well-informed, and dedicated to providing quality education, and their expertise in the field of petroleum and energy is commendable.<br><br>The MBA program in Petroleum and Energy at Rajiv Gandhi Institute of Petroleum Technology provided me with in-depth knowledge and hands-on experience of the oil and gas industry. The curriculum covered a wide range of topics, including upstream and downstream operations, oil and gas exploration, drilling, production, and refining. The program provided me with a comprehensive understanding of the complexities and challenges of the industry, along with the skills and knowledge required to tackle them.<br><br>The institute also provided me with numerous opportunities to intern with leading companies in the oil and gas industry, giving me valuable experience and exposure to the industry. My experience at Rajiv Gandhi Institute of Petroleum Technology has undoubtedly prepared me well for future opportunities in the oil and gas sector. The institute's focus on providing a well-rounded education, including practical training, has equipped me with the skills, knowledge, and experience to tackle any challenges that come my way. I am now a proud alumnus of one of the finest institutions in the country and confident that my education at the institute will enable me to make a valuable contribution to the oil and gas industry. In conclusion, I would like to express my gratitude to Rajiv Gandhi Institute of Petroleum Technology for providing me with an excellent education and a promising start to my career. I would highly recommend this institute to any student looking for quality education in the field of petroleum and energy."</p>
                             <div class="text-right">
-                                <p class="font-bold text-gray-800">Ms. Priya Mishra</p>
-                                <p class="text-sm text-gray-500">Drilling Engineer, Cairn India</p>
+                                <p class="font-bold text-gray-800">Shaik Azeez Hussain (2013-15)</p>
+                                <p class="text-sm text-gray-500">Andhra Pradesh State Financial Corporation</p>
                             </div>
                         </div>
                     </div>
@@ -830,6 +940,7 @@ I invite you to explore our web page and make the most of the resources and oppo
 
             </div>
         </div>
+
 
         
         <div id="achievements" class="page-content hidden">
@@ -1021,7 +1132,7 @@ I invite you to explore our web page and make the most of the resources and oppo
                         <i class="fas fa-hand-holding-dollar text-5xl text-sky-600 mx-auto mb-4"></i>
                         <h3 class="text-xl font-bold text-sky-800 mb-2">Financial Support</h3>
                         <p class="text-gray-600 text-sm mb-6 flex-grow">Help fund scholarships, upgrade campus infrastructure, or support vital research projects. Every donation empowers the next generation.</p>
-                        <button class="bg-sky-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-sky-700 transition-colors mt-auto w-full">Donate Now</button>
+                        <button class="bg-sky-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-sky-700 transition-colors mt-auto w-full"><a href="3.html">Donate Now</a></button>
                     </div>
                     <div class="award-card bg-green-50 p-6 rounded-lg border border-green-200 text-center flex flex-col">
                         <i class="fas fa-users-line text-5xl text-green-600 mx-auto mb-4"></i>
@@ -1057,85 +1168,85 @@ I invite you to explore our web page and make the most of the resources and oppo
                                     <td class="px-6 py-4 font-semibold text-gray-900">Institute Silver Medals (All Branches)</td>
                                     <td class="px-6 py-4">Convocation</td>
                                     <td class="px-6 py-4 text-center"><span class="bg-sky-100 text-sky-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-full">11</span></td>
-                                    <td class="px-6 py-4 text-center"><button class="bg-green-600 text-white font-semibold py-1 px-3 rounded-md hover:bg-green-700 text-xs">Sponsor</button></td>
+                                    <td class="px-6 py-4 text-center"><button class="bg-green-600 text-white font-semibold py-1 px-3 rounded-md hover:bg-green-700 text-xs"><a href="3.html">Sponsor</a></button></td>
                                 </tr>
                                 <tr class="bg-white border-b hover:bg-sky-50">
                                     <td class="px-6 py-4 font-semibold text-gray-900">Presidential Research Scholar Award (UG)</td>
                                     <td class="px-6 py-4">Convocation</td>
                                     <td class="px-6 py-4 text-center"><span class="bg-sky-100 text-sky-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-full">01</span></td>
-                                    <td class="px-6 py-4 text-center"><button class="bg-green-600 text-white font-semibold py-1 px-3 rounded-md hover:bg-green-700 text-xs">Sponsor</button></td>
+                                    <td class="px-6 py-4 text-center"><button class="bg-green-600 text-white font-semibold py-1 px-3 rounded-md hover:bg-green-700 text-xs"><a href="3.html">Sponsor</a></button></td>
                                 </tr>
                                 <tr class="bg-white border-b hover:bg-sky-50">
                                     <td class="px-6 py-4 font-semibold text-gray-900">Best Impactful Research Award (UG)</td>
                                     <td class="px-6 py-4">Convocation</td>
                                     <td class="px-6 py-4 text-center"><span class="bg-sky-100 text-sky-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-full">01</span></td>
-                                    <td class="px-6 py-4 text-center"><button class="bg-green-600 text-white font-semibold py-1 px-3 rounded-md hover:bg-green-700 text-xs">Sponsor</button></td>
+                                    <td class="px-6 py-4 text-center"><button class="bg-green-600 text-white font-semibold py-1 px-3 rounded-md hover:bg-green-700 text-xs"><a href="3.html">Sponsor</a></button></td>
                                 </tr>
                                 <tr class="bg-white border-b hover:bg-sky-50">
                                     <td class="px-6 py-4 font-semibold text-gray-900">Young Achiever's Award</td>
                                     <td class="px-6 py-4">Convocation</td>
                                     <td class="px-6 py-4 text-center"><span class="bg-sky-100 text-sky-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-full">01</span></td>
-                                    <td class="px-6 py-4 text-center"><button class="bg-green-600 text-white font-semibold py-1 px-3 rounded-md hover:bg-green-700 text-xs">Sponsor</button></td>
+                                    <td class="px-6 py-4 text-center"><button class="bg-green-600 text-white font-semibold py-1 px-3 rounded-md hover:bg-green-700 text-xs"><a href="3.html">Sponsor</a></button></td>
                                 </tr>
                                 <tr class="bg-white border-b hover:bg-sky-50">
                                     <td class="px-6 py-4 font-semibold text-gray-900">Emerging Leader Award</td>
                                     <td class="px-6 py-4">Convocation</td>
                                     <td class="px-6 py-4 text-center"><span class="bg-sky-100 text-sky-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-full">01</span></td>
-                                    <td class="px-6 py-4 text-center"><button class="bg-green-600 text-white font-semibold py-1 px-3 rounded-md hover:bg-green-700 text-xs">Sponsor</button></td>
+                                    <td class="px-6 py-4 text-center"><button class="bg-green-600 text-white font-semibold py-1 px-3 rounded-md hover:bg-green-700 text-xs"><a href="3.html">Sponsor</a></button></td>
                                 </tr>
                                 <tr class="bg-white border-b hover:bg-sky-50">
                                     <td class="px-6 py-4 font-semibold text-gray-900">President's Volunteer Service Award</td>
                                     <td class="px-6 py-4">Convocation</td>
                                     <td class="px-6 py-4 text-center"><span class="bg-sky-100 text-sky-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-full">01</span></td>
-                                    <td class="px-6 py-4 text-center"><button class="bg-green-600 text-white font-semibold py-1 px-3 rounded-md hover:bg-green-700 text-xs">Sponsor</button></td>
+                                    <td class="px-6 py-4 text-center"><button class="bg-green-600 text-white font-semibold py-1 px-3 rounded-md hover:bg-green-700 text-xs"><a href="3.html">Sponsor</a></button></td>
                                 </tr>
                                 <tr class="bg-white border-b hover:bg-sky-50">
                                     <td class="px-6 py-4 font-semibold text-gray-900">Sustainable Energy Innovator Award</td>
                                     <td class="px-6 py-4">Convocation</td>
                                     <td class="px-6 py-4 text-center"><span class="bg-sky-100 text-sky-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-full">01</span></td>
-                                    <td class="px-6 py-4 text-center"><button class="bg-green-600 text-white font-semibold py-1 px-3 rounded-md hover:bg-green-700 text-xs">Sponsor</button></td>
+                                    <td class="px-6 py-4 text-center"><button class="bg-green-600 text-white font-semibold py-1 px-3 rounded-md hover:bg-green-700 text-xs"><a href="3.html">Sponsor</a></button></td>
                                 </tr>
                                 <tr class="bg-white border-b hover:bg-sky-50">
                                     <td class="px-6 py-4 font-semibold text-gray-900">Best Hostel Award</td>
                                     <td class="px-6 py-4">Hostel Day Celebration</td>
                                     <td class="px-6 py-4 text-center"><span class="bg-sky-100 text-sky-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-full">01</span></td>
-                                    <td class="px-6 py-4 text-center"><button class="bg-green-600 text-white font-semibold py-1 px-3 rounded-md hover:bg-green-700 text-xs">Sponsor</button></td>
+                                    <td class="px-6 py-4 text-center"><button class="bg-green-600 text-white font-semibold py-1 px-3 rounded-md hover:bg-green-700 text-xs"><a href="3.html">Sponsor</a></button></td>
                                 </tr>
                                 <tr class="bg-white border-b hover:bg-sky-50">
                                     <td class="px-6 py-4 font-semibold text-gray-900">Green and Clean Hostel Award</td>
                                     <td class="px-6 py-4">Hostel Day Celebration</td>
                                     <td class="px-6 py-4 text-center"><span class="bg-sky-100 text-sky-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-full">01</span></td>
-                                    <td class="px-6 py-4 text-center"><button class="bg-green-600 text-white font-semibold py-1 px-3 rounded-md hover:bg-green-700 text-xs">Sponsor</button></td>
+                                    <td class="px-6 py-4 text-center"><button class="bg-green-600 text-white font-semibold py-1 px-3 rounded-md hover:bg-green-700 text-xs"><a href="3.html">Sponsor</a></button></td>
                                 </tr>
                                 <tr class="bg-white border-b hover:bg-sky-50">
                                     <td class="px-6 py-4 font-semibold text-gray-900">Best Decoration Hostel</td>
                                     <td class="px-6 py-4">Hostel Day Celebration</td>
                                     <td class="px-6 py-4 text-center"><span class="bg-sky-100 text-sky-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-full">01</span></td>
-                                    <td class="px-6 py-4 text-center"><button class="bg-green-600 text-white font-semibold py-1 px-3 rounded-md hover:bg-green-700 text-xs">Sponsor</button></td>
+                                    <td class="px-6 py-4 text-center"><button class="bg-green-600 text-white font-semibold py-1 px-3 rounded-md hover:bg-green-700 text-xs"><a href="3.html">Sponsor</a></button></td>
                                 </tr>
                                 <tr class="bg-white border-b hover:bg-sky-50">
                                     <td class="px-6 py-4 font-semibold text-gray-900">Best Resident of the Hostel (for each Hostel)</td>
                                     <td class="px-6 py-4">Hostel Day Celebration</td>
                                     <td class="px-6 py-4 text-center"><span class="bg-sky-100 text-sky-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-full">08</span></td>
-                                    <td class="px-6 py-4 text-center"><button class="bg-green-600 text-white font-semibold py-1 px-3 rounded-md hover:bg-green-700 text-xs">Sponsor</button></td>
+                                    <td class="px-6 py-4 text-center"><button class="bg-green-600 text-white font-semibold py-1 px-3 rounded-md hover:bg-green-700 text-xs"><a href="3.html">Sponsor</a></button></td>
                                 </tr>
                                 <tr class="bg-white border-b hover:bg-sky-50">
                                     <td class="px-6 py-4 font-semibold text-gray-900">Best Resident of the Campus</td>
                                     <td class="px-6 py-4">Hostel Day Celebration</td>
                                     <td class="px-6 py-4 text-center"><span class="bg-sky-100 text-sky-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-full">01</span></td>
-                                    <td class="px-6 py-4 text-center"><button class="bg-green-600 text-white font-semibold py-1 px-3 rounded-md hover:bg-green-700 text-xs">Sponsor</button></td>
+                                    <td class="px-6 py-4 text-center"><button class="bg-green-600 text-white font-semibold py-1 px-3 rounded-md hover:bg-green-700 text-xs"><a href="3.html">Sponsor</a></button></td>
                                 </tr>
                                 <tr class="bg-white border-b hover:bg-sky-50">
                                     <td class="px-6 py-4 font-semibold text-gray-900">Best Sports Person of the Year</td>
                                     <td class="px-6 py-4">Hostel Day Celebration</td>
                                     <td class="px-6 py-4 text-center"><span class="bg-sky-100 text-sky-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-full">01</span></td>
-                                    <td class="px-6 py-4 text-center"><button class="bg-green-600 text-white font-semibold py-1 px-3 rounded-md hover:bg-green-700 text-xs">Sponsor</button></td>
+                                    <td class="px-6 py-4 text-center"><button class="bg-green-600 text-white font-semibold py-1 px-3 rounded-md hover:bg-green-700 text-xs"><a href="3.html">Sponsor</a></button></td>
                                 </tr>
                                 <tr class="bg-white hover:bg-sky-50">
                                     <td class="px-6 py-4 font-semibold text-gray-900">Best Musician of the Year</td>
                                     <td class="px-6 py-4">Hostel Day Celebration</td>
                                     <td class="px-6 py-4 text-center"><span class="bg-sky-100 text-sky-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-full">01</span></td>
-                                    <td class="px-6 py-4 text-center"><button class="bg-green-600 text-white font-semibold py-1 px-3 rounded-md hover:bg-green-700 text-xs">Sponsor</button></td>
+                                    <td class="px-6 py-4 text-center"><button class="bg-green-600 text-white font-semibold py-1 px-3 rounded-md hover:bg-green-700 text-xs"><a href="3.html">Sponsor</a></button></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -1154,7 +1265,7 @@ I invite you to explore our web page and make the most of the resources and oppo
                             </div>
                             <h4 class="text-lg font-bold text-gray-800">Distinguished Alumnus Award</h4>
                             <p class="text-sm text-gray-600 mt-2 mb-4 flex-grow">For outstanding professional achievement and significant contribution to society.</p>
-                            <button class="bg-yellow-500 text-white font-semibold py-2 px-6 rounded-md hover:bg-yellow-600 w-full mt-auto">Sponsor Award</button>
+                            <button class="bg-yellow-500 text-white font-semibold py-2 px-6 rounded-md hover:bg-yellow-600 w-full mt-auto"><a href="3.html">Sponsor Award</a></button>
                         </div>
                         <div class="award-card bg-white p-6 rounded-lg shadow-lg border border-gray-200 flex flex-col items-center text-center">
                             <div class="w-20 h-20 rounded-full bg-blue-100 flex items-center justify-center mb-4 border-4 border-white shadow-md">
@@ -1162,7 +1273,7 @@ I invite you to explore our web page and make the most of the resources and oppo
                             </div>
                             <h4 class="text-lg font-bold text-gray-800">Young Alumnus Award</h4>
                             <p class="text-sm text-gray-600 mt-2 mb-4 flex-grow">Recognizing alumni under 40 for their remarkable early-career accomplishments.</p>
-                            <button class="bg-blue-500 text-white font-semibold py-2 px-6 rounded-md hover:bg-blue-600 w-full mt-auto">Sponsor Award</button>
+                            <button class="bg-blue-500 text-white font-semibold py-2 px-6 rounded-md hover:bg-blue-600 w-full mt-auto"><a href="3.html">Sponsor Award</a></button>
                         </div>
                         <div class="award-card bg-white p-6 rounded-lg shadow-lg border border-gray-200 flex flex-col items-center text-center">
                             <div class="w-20 h-20 rounded-full bg-red-100 flex items-center justify-center mb-4 border-4 border-white shadow-md">
@@ -1170,7 +1281,7 @@ I invite you to explore our web page and make the most of the resources and oppo
                             </div>
                             <h4 class="text-lg font-bold text-gray-800">Alumnus Service Award</h4>
                             <p class="text-sm text-gray-600 mt-2 mb-4 flex-grow">For significant and dedicated volunteer service to the institute and alumni community.</p>
-                            <button class="bg-red-500 text-white font-semibold py-2 px-6 rounded-md hover:bg-red-600 w-full mt-auto">Sponsor Award</button>
+                            <button class="bg-red-500 text-white font-semibold py-2 px-6 rounded-md hover:bg-red-600 w-full mt-auto"><a href="3.html">Sponsor Award</a></button>
                         </div>
                         <div class="award-card bg-white p-6 rounded-lg shadow-lg border border-gray-200 flex flex-col items-center text-center">
                             <div class="w-20 h-20 rounded-full bg-purple-100 flex items-center justify-center mb-4 border-4 border-white shadow-md">
@@ -1178,7 +1289,7 @@ I invite you to explore our web page and make the most of the resources and oppo
                             </div>
                             <h4 class="text-lg font-bold text-gray-800">Entrepreneur Alumnus of the Year</h4>
                             <p class="text-sm text-gray-600 mt-2 mb-4 flex-grow">Celebrating alumni who have demonstrated exceptional entrepreneurial spirit and success.</p>
-                            <button class="bg-purple-500 text-white font-semibold py-2 px-6 rounded-md hover:bg-purple-600 w-full mt-auto">Sponsor Award</button>
+                            <button class="bg-purple-500 text-white font-semibold py-2 px-6 rounded-md hover:bg-purple-600 w-full mt-auto"><a href="3.html">Sponsor Award</a></button>
                         </div>
                         <div class="award-card bg-white p-6 rounded-lg shadow-lg border border-gray-200 flex flex-col items-center text-center">
                             <div class="w-20 h-20 rounded-full bg-teal-100 flex items-center justify-center mb-4 border-4 border-white shadow-md">
@@ -1186,7 +1297,7 @@ I invite you to explore our web page and make the most of the resources and oppo
                             </div>
                             <h4 class="text-lg font-bold text-gray-800">Best Graduating Student Award</h4>
                             <p class="text-sm text-gray-600 mt-2 mb-4 flex-grow">Sponsor the award for the top graduating student, recognizing their overall excellence.</p>
-                            <button class="bg-teal-500 text-white font-semibold py-2 px-6 rounded-md hover:bg-teal-600 w-full mt-auto">Sponsor Award</button>
+                            <button class="bg-teal-500 text-white font-semibold py-2 px-6 rounded-md hover:bg-teal-600 w-full mt-auto"><a href="3.html">Sponsor Award</a></button>
                         </div>
                         <div class="award-card bg-white p-6 rounded-lg shadow-lg border border-gray-200 flex flex-col items-center text-center">
                             <div class="w-20 h-20 rounded-full bg-indigo-100 flex items-center justify-center mb-4 border-4 border-white shadow-md">
@@ -1194,7 +1305,7 @@ I invite you to explore our web page and make the most of the resources and oppo
                             </div>
                             <h4 class="text-lg font-bold text-gray-800">Best B.Tech. Project Award</h4>
                             <p class="text-sm text-gray-600 mt-2 mb-4 flex-grow">Encourage innovation by sponsoring the award for the most outstanding final year project.</p>
-                            <button class="bg-indigo-500 text-white font-semibold py-2 px-6 rounded-md hover:bg-indigo-600 w-full mt-auto">Sponsor Award</button>
+                            <button class="bg-indigo-500 text-white font-semibold py-2 px-6 rounded-md hover:bg-indigo-600 w-full mt-auto"><a href="3.html">Sponsor Award</a></button>
                         </div>
                     </div>
                 </div>
@@ -1351,6 +1462,88 @@ I invite you to explore our web page and make the most of the resources and oppo
             // Show home page by default
             showPage('home');
         });
+        function alumniDirectory() {
+        return {
+            isModalOpen: false,
+            photoPreviewUrl: null, 
+
+            // Form data
+            newAlumnus: {
+                name: '',
+                email: '',
+                passingYear: '',
+                branch: '',
+                linkedin: '',
+                photoFile: null 
+            },
+
+            // Sample data (replace this by fetching from your database)
+            alumni: [
+                { 
+                    id: 1, 
+                    name: 'Jane Doe', 
+                    email: 'jane.doe@example.com', 
+                    passingYear: 2018, 
+                    branch: 'Computer Science', 
+                    linkedin: 'https://linkedin.com/in/janedoe', 
+                    photo: 'https://i.pravatar.cc/150?u=jane.doe@example.com' 
+                },
+                { 
+                    id: 2, 
+                    name: 'John Smith', 
+                    email: 'john.smith@example.com', 
+                    passingYear: 2019, 
+                    branch: 'Mechanical Eng.', 
+                    linkedin: 'https://linkedin.com/in/johnsmith', 
+                    photo: 'https://i.pravatar.cc/150?u=john.smith@example.com' 
+                },
+                { 
+                    id: 3, 
+                    name: 'Priya Sharma', 
+                    email: 'priya.sharma@example.com', 
+                    passingYear: 2017, 
+                    branch: 'Electronics', 
+                    linkedin: 'https://linkedin.com/in/priyasharma', 
+                    photo: 'https://i.pravatar.cc/150?u=priya.sharma@example.com' 
+                }
+            ],
+
+            // Handle file input change
+            handlePhotoChange(event) {
+                const file = event.target.files[0];
+                if (file) {
+                    this.newAlumnus.photoFile = file;
+                    this.photoPreviewUrl = URL.createObjectURL(file);
+                }
+            },
+
+            // Handle form submission
+            handleSubmit() {
+                const finalPhotoUrl = this.photoPreviewUrl || `https://i.pravatar.cc/150?u=${this.newAlumnus.email}`;
+
+                const newPerson = {
+                    id: Date.now(), 
+                    name: this.newAlumnus.name,
+                    email: this.newAlumnus.email,
+                    passingYear: this.newAlumnus.passingYear,
+                    branch: this.newAlumnus.branch,
+                    linkedin: this.newAlumnus.linkedin,
+                    photo: finalPhotoUrl
+                };
+
+                // Add new person to the list
+                this.alumni.unshift(newPerson);
+
+                // Close modal
+                this.isModalOpen = false;
+
+                // Reset the form
+                this.newAlumnus = { name: '', email: '', passingYear: '', branch: '', linkedin: '', photoFile: null };
+                this.photoPreviewUrl = null;
+            }
+        }
+    }
+    
     </script>
 </body>
 </html>
